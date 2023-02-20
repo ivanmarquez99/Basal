@@ -8,8 +8,6 @@ var cajetinPeso = document.querySelector("#weight")
 var cajetinAltura = document.querySelector("#height")
 var cajetinActividad = document.querySelector("#activity")
 var form = document.querySelector("form")
-var modalForm = document.querySelector("#staticBackdrop")
-var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 
 var bd = window.localStorage
 
@@ -29,8 +27,8 @@ if (bd.getItem("datos")) {
     nuevaFila.querySelector("td.height").innerText = u.altura
     nuevaFila.querySelector("span.activity").innerText = u.actividad
     var dataGet = getData(u.peso, u.altura, u.edad, u.sexo)
-    nuevaFila.querySelector("td.get").innerText = dataGet
-    nuevaFila.querySelector("td.ger").innerText = gerData(u.actividad, dataGet, u.sexo, nuevaFila)
+    nuevaFila.querySelector("td.get").innerText = dataGet + " kCal"
+    nuevaFila.querySelector("td.ger").innerText = gerData(u.actividad, dataGet, u.sexo, nuevaFila) + " kCal"
     tabla.appendChild(nuevaFila)
   })
 }
@@ -58,7 +56,7 @@ form.addEventListener("submit", (ev) => {
   usuarios.push(usuario)
   bd.setItem("datos", JSON.stringify(usuarios))
 
-  myModal.hide();
+  bootstrap.Modal.getInstance(document.getElementById('staticBackdrop')).hide();
 })
 
 function crearUsuario() {
