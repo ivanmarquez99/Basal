@@ -16,7 +16,7 @@
   <main class="container vw-100 vh-100 d-flex align-items-center flex-column justify-content-center gap-3">
     <h1>Listado de clientes</h1>
     <div class="vw-100 pe-5 ps-5 table-responsive">
-      <table class="table table-bordered text-center table-striped table-hover ">
+      <table class="table table-bordered text-center table-striped table-hover">
         <thead class="bg-primary text-white">
           <tr>
             <th scope="col">Nombre</th>
@@ -30,69 +30,24 @@
             <th scope="col">GER (kCal)</th>
           </tr>
         </thead>
+        <template>
+          <tr>
+            <td class="name"></td>
+            <td class="lastName"></td>
+            <td>
+              <span class="badge bg-primary gen"></span>
+            </td>
+            <td class="age"></td>
+            <td class="height"></td>
+            <td class="weight"></td>
+            <td>
+              <span class="badge bg-secondary activity"></span>
+            </td>
+            <td class="get"></td>
+            <td class="ger"></td>
+          </tr>
+        </template>
         <tbody>
-          <template>
-            <tr>
-              <td class="name"></td>
-              <td class="lastName"></td>
-              <td>
-                <span class="badge bg-primary gen"></span>
-              </td>
-              <td class="age"></td>
-              <td class="height"></td>
-              <td class="weight"></td>
-              <td>
-                <span class="badge bg-secondary activity"></span>
-              </td>
-              <td class="get"></td>
-              <td class="ger"></td>
-            </tr>
-          </template>
-          <tr>
-            <td>Jonathan</td>
-            <td>Ebert</td>
-            <td>
-              <span class="badge bg-primary">hombre</span>
-            </td>
-            <td>45</td>
-            <td>178</td>
-            <td>97</td>
-            <td>
-              <span class="badge bg-secondary">sedentaria</span>
-            </td>
-            <td class="get">1986 kCal</td>
-            <td class="ger">2582 kCal</td>
-          </tr>
-          <tr>
-            <td>Fermin</td>
-            <td>Kris</td>
-            <td>
-              <span class="badge bg-primary">mujer</span>
-            </td>
-            <td>28</td>
-            <td>179</td>
-            <td>65</td>
-            <td>
-              <span class="badge bg-secondary">moderada</span>
-            </td>
-            <td class="get">1469 kCal</td>
-            <td class="ger">2350 kCal</td>
-          </tr>
-          <tr>
-            <td>Ann</td>
-            <td>Takamaki</td>
-            <td>
-              <span class="badge bg-primary">mujer</span>
-            </td>
-            <td>17</td>
-            <td>170</td>
-            <td>48</td>
-            <td>
-              <span class="badge bg-secondary">intensa</span>
-            </td>
-            <td class="get">1343 kCal</td>
-            <td class="ger">2551 kCal</td>
-          </tr>
         </tbody>
       </table>
     </div>
