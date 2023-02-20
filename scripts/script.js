@@ -76,7 +76,6 @@ function crearUsuario() {
 
 
 function getData(peso, altura, edad, sexo) {
-  console.log(peso, altura, edad, sexo)
   dataGet = 0;
   if (sexo == "hombre") {
     var dataGet = Math.round(66.473 + 13.751 * peso + 5.0033 * altura - 6.755 * edad);
@@ -87,29 +86,39 @@ function getData(peso, altura, edad, sexo) {
 }
 
 function gerData(actividad, get, sexo) {
+  var dataGer = 0;
   if (sexo == "hombre") {
   switch (actividad) {
     case "sedentaria":
-      return Math.round(get * 1.3);
+      dataGer = Math.round(get * 1.3);
+      break;
     case "ligera":
-      return Math.round(get * 1.6);
+      dataGer = Math.round(get * 1.6);
+      break;
     case "moderada":
-      return Math.round(get * 1.7);
+      dataGer = Math.round(get * 1.7);
+      break;
     case "intensa":
-      return Math.round(get * 2.1);
+      dataGer = Math.round(get * 2.1);
+      break;
   }
 } else {
   switch (actividad) {
     case "sedentaria":
-      return Math.round(get * 1.3);
+      dataGer = Math.round(get * 1.3);
+      break;
     case "ligera":
-      return Math.round(get * 1.6);
+      dataGer = Math.round(get * 1.6);
+      break;
     case "moderada":
-      return Math.round(get * 1.7);
+      dataGer = Math.round(get * 1.7);
+      break;
     case "intensa":
-      return Math.round(get * 2.1);
+      dataGer = Math.round(get * 2.1);
+      break;
   }
 }
+return dataGer;
 }
 
 function cargarDatos() {
