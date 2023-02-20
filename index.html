@@ -10,7 +10,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
     crossorigin="anonymous"></script>
-  <script src="scripts/script.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -32,17 +31,34 @@
           </tr>
         </thead>
         <tbody>
+          <template>
+            <tr>
+              <td class="name"></td>
+              <td class="lastName"></td>
+              <td>
+                <span class="badge bg-primary gen"></span>
+              </td>
+              <td class="age"></td>
+              <td class="height"></td>
+              <td class="weight"></td>
+              <td>
+                <span class="badge bg-secondary activity"></span>
+              </td>
+              <td class="get"></td>
+              <td class="ger"></td>
+            </tr>
+          </template>
           <tr>
             <td>Jonathan</td>
             <td>Ebert</td>
             <td>
-              <div class="bg-primary rounded text-white d-inline ps-1 pe-1 p fw-semibold">hombre</div>
+              <span class="badge bg-primary">hombre</span>
             </td>
             <td>45</td>
             <td>178</td>
             <td>97</td>
             <td>
-              <div class="bg-secondary rounded text-white d-inline ps-1 pe-1 p fw-semibold">sedentaria</div>
+              <span class="badge bg-secondary">sedentaria</span>
             </td>
             <td class="get">1986</td>
             <td class="ger">2582</td>
@@ -51,13 +67,13 @@
             <td>Fermin</td>
             <td>Kris</td>
             <td>
-              <div class="bg-primary rounded text-white d-inline ps-1 pe-1 p fw-semibold">mujer</div>
+              <span class="badge bg-primary">mujer</span>
             </td>
             <td>28</td>
             <td>179</td>
             <td>65</td>
             <td>
-              <div class="bg-secondary rounded text-white d-inline ps-1 pe-1 p fw-semibold">moderada</div>
+              <span class="badge bg-secondary">moderada</span>
             </td>
             <td class="get">1469</td>
             <td class="ger">2350</td>
@@ -66,28 +82,13 @@
             <td>Ann</td>
             <td>Takamaki</td>
             <td>
-              <div class="bg-primary rounded text-white d-inline ps-1 pe-1 p fw-semibold">mujer</div>
+              <span class="badge bg-primary">mujer</span>
             </td>
             <td>17</td>
             <td>170</td>
             <td>48</td>
             <td>
-              <div class="bg-secondary rounded text-white d-inline ps-1 pe-1 p fw-semibold">intensa</div>
-            </td>
-            <td>1343</td>
-            <td>2551</td>
-          </tr>
-          <tr>
-            <td class="name"></td>
-            <td class="lastName"></td>
-            <td class="sex">
-              <div class="bg-primary rounded text-white d-inline ps-1 pe-1 p fw-semibold">mujer</div>
-            </td>
-            <td class="""">17</td>
-            <td>170</td>
-            <td>48</td>
-            <td>
-              <div class="bg-secondary rounded text-white d-inline ps-1 pe-1 p fw-semibold">intensa</div>
+              <span class="badge bg-secondary">intensa</span>
             </td>
             <td>1343</td>
             <td>2551</td>
@@ -97,7 +98,7 @@
     </div>
     <div class="d-flex gap-4 col-6"><button type="button" class="btn btn-primary rounded-0 w-100" data-bs-toggle="modal"
         data-bs-target="#staticBackdrop">Nuevo cliente</button><button type="button"
-        class="btn btn-secondary rounded-0 w-100">Cargar datos externos</button></div>
+        class="btn btn-secondary rounded-0 w-100" onclick="cargarDatos()">Cargar datos externos</button></div>
   </main>
 
   <!-- Vertically centered modal -->
@@ -110,7 +111,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id="CreateForm">
             <div class="mb-2">
               <label for="name" class="form-label">Nombre</label>
               <input type="text" class="form-control" id="name" placeholder="Nombre" required>
@@ -121,19 +122,19 @@
             </div>
             <div class="d-flex mb-2 gap-4" id="selects">
               <div class="w-100">
-                <label for="sex">Sexo</label>
-                <select class="form-select" id="sex" aria-label="label select" required>
-                  <option value="1">Hombre</option>
-                  <option value="2">Mujer</option>
+                <label for="gen">Sexo</label>
+                <select class="form-select" id="gen" aria-label="label select" required>
+                  <option value="hombre">Hombre</option>
+                  <option value="mujer">Mujer</option>
                 </select>
               </div>
               <div class="w-100">
                 <label for="activity">Actividad</label>
                 <select class="form-select" id="activity" aria-label="label select" required>
-                  <option value="1">Sedentaria</option>
-                  <option value="2">Ligera</option>
-                  <option value="3">Moderada</option>
-                  <option value="3">Intensa</option>
+                  <option value="sedentaria">Sedentaria</option>
+                  <option value="ligera">Ligera</option>
+                  <option value="moderada">Moderada</option>
+                  <option value="intensa">Intensa</option>
                 </select>
               </div>
             </div>
@@ -151,15 +152,16 @@
                 <input type="number" class="form-control" id="height" placeholder="165" required>
               </div>
             </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar cliente</button>
-          </form>
+          <button type="submit" class="btn btn-primary" form="CreateForm">Guardar cliente</button>
         </div>
       </div>
     </div>
   </div>
+  <script src="scripts/script.js" type="text/javascript"></script>
 </body>
 
 </html>

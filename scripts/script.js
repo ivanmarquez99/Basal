@@ -1,47 +1,126 @@
-var tabla = document.querySelector("table")
+var template = document.querySelector("template")
+var tabla = document.querySelector("tbody")
 var cajetinNombre = document.querySelector("#name")
-var cajetinEmail = document.querySelector("#lastNames")
-var cajetinRol = document.querySelector("#sex")
-var cajetinActividad = document.querySelector("#activity")
+var cajetinApellido = document.querySelector("#lastNames")
+var cajetinGenero = document.querySelector("#gen")
 var cajetinEdad = document.querySelector("#age")
 var cajetinPeso = document.querySelector("#weight")
 var cajetinAltura = document.querySelector("#height")
-var formulario = document.querySelector("form")
+var cajetinActividad = document.querySelector("#activity")
+var form = document.querySelector("form")
+var modalForm = document.querySelector("#staticBackdrop")
+var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
 
 var bd = window.localStorage
 
 var usuarios = []
 
-if( bd.getItem("datos") ){
+function datosExternos() {
+if (bd.getItem("datos")) {
   usuarios = JSON.parse(bd.getItem("datos"))
-  usuarios.forEach( (u)=>{
+  usuarios.forEach((u) => {
+    console.log(u)
     let nuevaFila = template.content.cloneNode(true)
-    nuevaFila.querySelector("th.nombre").innerText = u.nombre
-    nuevaFila.querySelector("td.email").innerText = u.email
-    nuevaFila.querySelector("span.rol").innerText = u.rol 
-    tabla.appendChild(nuevaFila)      
+    nuevaFila.querySelector("td.name").innerText = u.nombre
+    nuevaFila.querySelector("td.lastName").innerText = u.apellidos
+    nuevaFila.querySelector("span.gen").innerText = u.sexo
+    nuevaFila.querySelector("td.age").innerText = u.edad
+    nuevaFila.querySelector("td.weight").innerText = u.peso
+    nuevaFila.querySelector("td.height").innerText = u.altura
+    nuevaFila.querySelector("span.activity").innerText = u.actividad
+    var dataGet = getData(u.peso, u.altura, u.edad, u.sexo)
+    nuevaFila.querySelector("td.get").innerText = dataGet
+    nuevaFila.querySelector("td.ger").innerText = gerData(u.actividad, dataGet, u.sexo, nuevaFila)
+    tabla.appendChild(nuevaFila)
   })
 }
+}
 
-formulario.addEventListener("submit", (ev)=>{
+form.addEventListener("submit", (ev) => {
   ev.preventDefault()
-  
+
   let usuario = crearUsuario()
   let nuevaFila = template.content.cloneNode(true)
-  nuevaFila.querySelector("th.nombre").innerText = usuario.nombre
-  nuevaFila.querySelector("td.email").innerText = usuario.email
-  nuevaFila.querySelector("span.rol").innerText = usuario.rol 
-  tabla.appendChild(nuevaFila)  
+  nuevaFila.querySelector("td.name").innerText = usuario.nombre
+  nuevaFila.querySelector("td.lastName").innerText = usuario.apellidos
+  nuevaFila.querySelector("span.gen").innerText = usuario.sexo
+  nuevaFila.querySelector("td.age").innerText = usuario.edad
+  nuevaFila.querySelector("td.weight").innerText = usuario.peso
+  nuevaFila.querySelector("td.height").innerText = usuario.altura
+  nuevaFila.querySelector("span.activity").innerText = usuario.actividad
+
+  var dataGet = getData(usuario.peso, usuario.altura, usuario.edad, usuario.sexo)
   
+  nuevaFila.querySelector("td.get").innerText = dataGet;
+  nuevaFila.querySelector("td.ger").innerText = gerData(usuario.actividad, dataGet, usuario.sexo)
+  tabla.appendChild(nuevaFila)
+
   usuarios.push(usuario)
-  
-  bd.setItem("datos",JSON.stringify(usuarios))
+  bd.setItem("datos", JSON.stringify(usuarios))
+
+  myModal.hide();
 })
 
-function crearUsuario(){
+function crearUsuario() {
   return {
-    "nombre" : cajetinNombre.value,
-    "email": cajetinEmail.value,
-    "rol": cajetinRol.value
+    "nombre": cajetinNombre.value,
+    "apellidos": cajetinApellido.value,
+    "sexo": cajetinGenero.value,
+    "edad": parseInt(cajetinEdad.value),
+    "peso":  parseInt(cajetinPeso.value),
+    "altura":  parseInt(cajetinAltura.value),
+    "actividad": cajetinActividad.value
   }
 }
+
+
+
+function getData(peso, altura, edad, sexo) {
+  console.log(peso, altura, edad, sexo)
+  dataGet = 0;
+  if (sexo == "hombre") {
+    var dataGet = Math.round(66.473 + 13.751 * peso + 5.0033 * altura - 6.755 * edad);
+  } else {
+    var dataGet = Math.round(66.473 + 13.751 * peso + 5.0033 * altura - 6.755 * edad);
+  }
+  return dataGet;
+}
+
+function gerData(actividad, get, sexo) {
+  if (sexo == "hombre") {
+  switch (actividad) {
+    case "sedentaria":
+      return Math.round(get * 1.3);
+    case "ligera":
+      return Math.round(get * 1.6);
+    case "moderada":
+      return Math.round(get * 1.7);
+    case "intensa":
+      return Math.round(get * 2.1);
+  }
+} else {
+  switch (actividad) {
+    case "sedentaria":
+      return Math.round(get * 1.3);
+    case "ligera":
+      return Math.round(get * 1.6);
+    case "moderada":
+      return Math.round(get * 1.7);
+    case "intensa":
+      return Math.round(get * 2.1);
+  }
+}
+}
+
+function cargarDatos() {
+  const requestURL = 'https://raw.githubusercontent.com/FRomero999/ExamenDIW2022/main/clientes.json';
+  fetch(requestURL)
+  .then(response => response.text())
+  .then(data => {
+    console.log(data)
+    bd.setItem("datos", (data))
+    datosExternos();
+    });  
+}
+
+datosExternos();
