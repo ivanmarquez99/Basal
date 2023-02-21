@@ -72,11 +72,11 @@
           <form id="CreateForm">
             <div class="mb-3">
               <label for="name" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="name" placeholder="Nombre" required>
+              <input type="text" class="form-control" id="name" placeholder="Nombre" pattern="[a-zA-Zá-ú ]{2,50}" required>
             </div>
             <div class="mb-3">
               <label for="lastNames" class="form-label">Apellidos</label>
-              <input type="text" class="form-control" id="lastNames" placeholder="Apellidos" required>
+              <input type="text" class="form-control" id="lastNames" placeholder="Apellidos" pattern="[a-zA-Zá-ú ]{2,50}" required>
             </div>
             <div class="d-flex mb-4 gap-4" id="selects">
               <div class="w-100">
