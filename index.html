@@ -67,7 +67,7 @@
         <button type="button" id="importarDatos" class="btn btn-secondary rounded-0 w-100" accesskey="c">Cargar datos
           externos</button>
         <button type="button" id="exportarDatos" class="btn btn-secondary rounded-0 w-100 disabled" aria-disabled="true"
-          onclick="cargarDatos()" accesskey="e">Exportar datos</button>
+          accesskey="e">Exportar datos</button>
       </div>
       <button type="button" id="limpiarDatos"
         class="flex-fill order-2 order-md-3 my-2 btn btn-danger rounded-0 disabled" aria-disabled="true"
@@ -89,11 +89,13 @@
           <form id="CreateForm">
             <div class="mb-3">
               <label for="name" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="name" placeholder="Nombre" pattern="[a-zA-Zá-ú ]{2,50}" required>
+              <input type="text" class="form-control" id="name" placeholder="Nombre" pattern="[a-zA-Zá-ú ]{2,50}"
+                required>
             </div>
             <div class="mb-3">
               <label for="lastNames" class="form-label">Apellidos</label>
-              <input type="text" class="form-control" id="lastNames" placeholder="Apellidos" pattern="[a-zA-Zá-ú ]{2,50}" required>
+              <input type="text" class="form-control" id="lastNames" placeholder="Apellidos"
+                pattern="[a-zA-Zá-ú ]{2,50}" required>
             </div>
             <div class="d-flex mb-4 gap-4" id="selects">
               <div class="w-100">
@@ -113,25 +115,25 @@
                 </select>
               </div>
             </div>
-            <div class="d-flex mb-3 gap-4 flex-sm-wrap flex-xl-nowrap" id="numbers">
+            <div class="d-flex mb-3 gap-4 flex-wrap flex-lg-nowrap" id="numbers">
               <div class="d-flex w-100 align-items-center">
                 <label for="age" class="me-2">Edad</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" id="age" placeholder="35" min="16" max="120" required>
+                  <input type="number" class="form-control text-end" id="age" placeholder="35" min="16" max="120" required>
                   <span class="input-group-text" id="basic-addon2">años</span>
                 </div>
               </div>
               <div class="d-flex w-100 align-items-center">
                 <label for="weight" class="me-2">Peso</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" id="weight" placeholder="45" min="30" max="400" required>
+                  <input type="number" class="form-control text-end" id="weight" placeholder="45" min="30" max="400" required>
                   <span class="input-group-text" id="basic-addon2">kg</span>
                 </div>
               </div>
               <div class="d-flex w-100 align-items-center">
                 <label for="height" class="me-2">Altura</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" id="height" placeholder="165" min="70" max="300" required>
+                  <input type="number" class="form-control text-end" id="height" placeholder="165" min="70" max="300" required>
                   <span class="input-group-text" id="basic-addon2">cm</span>
                 </div>
               </div>

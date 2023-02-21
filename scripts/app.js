@@ -19,6 +19,7 @@ window.addEventListener('load', ()=>{
   
   // Eventos de los botones
   document.querySelector('button#importarDatos').addEventListener('click', importarDatos);
+  document.querySelector('button#exportarDatos').addEventListener('click', exportarDatos);
 
   // Cargamos y mostramos datos
   cargarYmostrarDatos();
@@ -184,6 +185,15 @@ function importarDatos() {
       document.querySelector('div#cargando').classList.add('d-none');
     });
 }
+
+
+/**
+ * Exporta los datos en formato JSON
+ */
+function exportarDatos() {
+
+}
+
 
 /**
  * Evento de formulario que limpia todos los datos tanto de la bd como de pantalla
