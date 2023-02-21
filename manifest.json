@@ -1,0 +1,21 @@
+{
+    "name": "Calculadora Basal",
+    "short_name": "calculadoraBasal",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "theme_color": "#ffffff",
+    "background_color": "#000",
+    "orientation": "portrait",
+    "description": "Calculadora de metabolismo basal",
+    "icons": [
+        {
+            "src": "./icon512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "protocol_handlers": [
+        {}
+    ]
+}
