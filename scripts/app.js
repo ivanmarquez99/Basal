@@ -15,8 +15,15 @@ var bd = window.localStorage;
 var usuarios = [];
 
 
-// Cuando cargue completamente, llamamos a CargarYmostrarDatos para que inserte lo que tengamos en bd.
-window.addEventListener('load', cargarYmostrarDatos);
+window.addEventListener('load', ()=>{
+  
+  // Eventos de los botones
+  document.querySelector('button#importarDatos').addEventListener('click', importarDatos);
+
+  // Cargamos y mostramos datos
+  cargarYmostrarDatos();
+
+});
 
 
 /**
@@ -32,8 +39,16 @@ function cargarYmostrarDatos() {
     // limpiamos el contenido de la tabla
     document.querySelector("tbody").innerHTML = "";
     anadirAtabla(usuarios);
+
+    // Habilitamos los botones de Exportar y Limpiar
+    document.querySelector('button#exportarDatos').classList.remove('disabled');
+    document.querySelector('button#exportarDatos').setAttribute('aria-disabled', 'false');
+    document.querySelector('button#limpiarDatos').classList.remove('disabled');
+    document.querySelector('button#limpiarDatos').setAttribute('aria-disabled', 'false');
+    
   }
 }
+
 
 /**
  * Añade filas a la tabla según un array de datos pasado
@@ -63,26 +78,6 @@ function anadirAtabla(datos) {
 
 }
 
-
-form.addEventListener("submit", (ev) => {
-  ev.preventDefault();
-
-  let usuario = {
-    "nombre": cajetinNombre.value,
-    "apellidos": cajetinApellido.value,
-    "sexo": cajetinGenero.value,
-    "edad": parseInt(cajetinEdad.value),
-    "peso": parseInt(cajetinPeso.value),
-    "altura": parseInt(cajetinAltura.value),
-    "actividad": cajetinActividad.value
-  };
-
-  usuarios.push(usuario);
-  bd.setItem("datos", JSON.stringify(usuarios));
-  cargarYmostrarDatos();
-
-  bootstrap.Modal.getInstance(document.getElementById('staticBackdrop')).hide();
-})
 
 /**
  * Devuelve los datos GET según los parámetros de usuarios facilitados
@@ -138,11 +133,37 @@ function gerData(actividad, get, sexo) {
 
 
 /**
+ * Añadimos un evento al enviar el formulario para importar los datos en el array y guardarlos en la bd
+ */
+document.querySelector('form#CreateForm').addEventListener("submit", (ev) => {
+  ev.preventDefault();
+
+  let usuario = {
+    "nombre": cajetinNombre.value,
+    "apellidos": cajetinApellido.value,
+    "sexo": cajetinGenero.value,
+    "edad": parseInt(cajetinEdad.value),
+    "peso": parseInt(cajetinPeso.value),
+    "altura": parseInt(cajetinAltura.value),
+    "actividad": cajetinActividad.value
+  };
+
+  usuarios.push(usuario);
+  bd.setItem("datos", JSON.stringify(usuarios));
+  cargarYmostrarDatos();
+
+  bootstrap.Modal.getInstance(document.querySelector('#modal-nuevoCliente')).hide();
+})
+
+
+/**
  * Carga los datos de json de una url
  */
-function cargarDatos() {
-  const requestURL = 'https://raw.githubusercontent.com/FRomero999/ExamenDIW2022/main/clientes.json';
-  fetch(requestURL)
+function importarDatos() {
+  
+  document.querySelector('div#cargando').classList.remove('d-none');
+  
+  fetch('https://raw.githubusercontent.com/FRomero999/ExamenDIW2022/main/clientes.json')
     .then(response => response.text())
     .then(data => {
 
@@ -159,5 +180,29 @@ function cargarDatos() {
       // Parseamos a json todo el array de usuarios y sobreescribimos todos los datos en bd
       bd.setItem("datos", JSON.stringify(usuarios));
       cargarYmostrarDatos();
+      
+      document.querySelector('div#cargando').classList.add('d-none');
     });
 }
+
+/**
+ * Evento de formulario que limpia todos los datos tanto de la bd como de pantalla
+ */
+document.querySelector('form#form-limpiarDatos').addEventListener("submit", (ev) => {
+  ev.preventDefault();
+
+  usuarios = [];
+  bd.setItem("datos", usuarios);
+  
+  // limpiamos el contenido de la tabla
+  document.querySelector("tbody").innerHTML = "";
+
+  // Deshabilitamos los botones de Exportar y Limpiar datos
+  document.querySelector('button#exportarDatos').classList.add('disabled');
+  document.querySelector('button#exportarDatos').setAttribute('aria-disabled', 'true');
+  document.querySelector('button#limpiarDatos').classList.add('disabled');
+  document.querySelector('button#limpiarDatos').setAttribute('aria-disabled', 'true');
+
+
+  bootstrap.Modal.getInstance(document.querySelector('#modal-limpiarDatos')).hide();
+})
