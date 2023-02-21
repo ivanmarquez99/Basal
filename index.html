@@ -13,6 +13,7 @@
 </head>
 
 <body>
+  <!-- overlay de carga para la importación externa -->
   <div id="cargando"
     class="d-none position-absolute vw-100 vh-100 z-4 d-flex justify-content-center align-items-center bg-dark bg-opacity-50">
     <div class="alert alert-primary d-flex justify-content-center align-items-center gap-2" role="alert">
@@ -20,11 +21,13 @@
       <span class="fs-5 fw-bold px-1">Cargando datos...</span>
     </div>
   </div>
+
+  <!-- App principal -->
   <section class="container vw-100 px-2 vh-100 d-flex align-items-center flex-column justify-content-center">
     <header class="py-2">
       <h1 class="my-0">Listado de clientes</h1>
     </header>
-    <main class="vw-100 pe-5 ps-5 table-responsive">
+    <main class="vw-100 px-3 table-responsive">
       <table class="table table-bordered text-center table-striped table-hover my-0">
         <thead class="bg-primary text-white sticky-top">
           <tr>
@@ -60,18 +63,21 @@
         </tbody>
       </table>
     </main>
-    <footer class="d-flex flex-wrap justify-content-center w-100 py-3 gap-2">
-      <button type="button" class="flex-fill order-1 my-2 btn btn-primary rounded-0" data-bs-toggle="modal"
-        data-bs-target="#modal-nuevoCliente" accesskey="n">Nuevo cliente</button>
-      <div class="flex-fill order-3 order-md-2 my-2 btn-group" role="group" aria-label="Datos">
-        <button type="button" id="importarDatos" class="btn btn-secondary rounded-0 w-100" accesskey="c">Cargar datos
-          externos</button>
-        <button type="button" id="exportarDatos" class="btn btn-secondary rounded-0 w-100 disabled" aria-disabled="true"
-          accesskey="e">Exportar datos</button>
+    <footer class="d-flex flex-wrap justify-content-center w-100 py-3 gap-3">
+      <button type="button" class="flex-fill btn btn-primary rounded-0" data-bs-toggle="modal"
+        data-bs-target="#modal-nuevoCliente" accesskey="n"><u>N</u>uevo cliente</button>
+      <button type="button" id="importarDatos" class="flex-fill btn btn-secondary rounded-0" accesskey="c"><u>C</u>argar
+        datos
+        externos</button>
+      <div class="flex-fill btn-group" role="group" aria-label="Datos">
+        <button type="button" id="importarDatos" class="btn btn-secondary w-100 rounded-0" data-bs-toggle="modal"
+          data-bs-target="#modal-importarDatos" accesskey="i"><u>I</u>mportar
+          datos</button>
+        <button type="button" id="exportarDatos" class="btn btn-secondary w-100 rounded-0 disabled" aria-disabled="true"
+          accesskey="e"><u>E</u>xportar datos</button>
       </div>
-      <button type="button" id="limpiarDatos"
-        class="flex-fill order-2 order-md-3 my-2 btn btn-danger rounded-0 disabled" aria-disabled="true"
-        data-bs-toggle="modal" data-bs-target="#modal-limpiarDatos">Limpiar
+      <button type="button" id="limpiarDatos" class="flex-fill btn btn-danger rounded-0 disabled" aria-disabled="true"
+        data-bs-toggle="modal" data-bs-target="#modal-limpiarDatos" accesskey="l"><u>iL</u>impiar
         datos</button>
     </footer>
   </section>
@@ -79,7 +85,7 @@
   <!-- modal - nuevo cliente -->
   <div class="modal fade" id="modal-nuevoCliente" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="modal-nuevoClienteLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-primary text-white">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">Nuevo cliente</h1>
@@ -119,21 +125,24 @@
               <div class="d-flex w-100 align-items-center">
                 <label for="age" class="me-2">Edad</label>
                 <div class="input-group">
-                  <input type="number" class="form-control text-end" id="age" placeholder="35" min="16" max="120" required>
+                  <input type="number" class="form-control text-end" id="age" placeholder="35" min="16" max="120"
+                    required>
                   <span class="input-group-text" id="basic-addon2">años</span>
                 </div>
               </div>
               <div class="d-flex w-100 align-items-center">
                 <label for="weight" class="me-2">Peso</label>
                 <div class="input-group">
-                  <input type="number" class="form-control text-end" id="weight" placeholder="45" min="30" max="400" required>
+                  <input type="number" class="form-control text-end" id="weight" placeholder="45" min="30" max="400"
+                    step=".01" required>
                   <span class="input-group-text" id="basic-addon2">kg</span>
                 </div>
               </div>
               <div class="d-flex w-100 align-items-center">
                 <label for="height" class="me-2">Altura</label>
                 <div class="input-group">
-                  <input type="number" class="form-control text-end" id="height" placeholder="165" min="70" max="300" required>
+                  <input type="number" class="form-control text-end" id="height" placeholder="165" min="70" max="300"
+                    required>
                   <span class="input-group-text" id="basic-addon2">cm</span>
                 </div>
               </div>
@@ -147,10 +156,40 @@
       </div>
     </div>
   </div>
-  <div class="modal" id="modal-limpiarDatos" tabindex="-1">
-    <div class="modal-dialog">
+
+  <!-- modal - importar datos -->
+  <div class="modal fade" id="modal-importarDatos" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
+          <h5 class="modal-title">Importar datos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="drop-area" class="alert alert-dark d-flex flex-wrap justify-content-center rounded-3">
+            <p class="p-5 m-0">Arrastre el archivo aquí</p>
+          </div>
+          <div>
+            <label for="formFile" class="form-label">o seleccione</label>
+            <input class="form-control" type="file" id="file-selector" accept=".json">
+          </div>
+          <div id="importarInfo" class="d-none alert alert-success mt-3 mb-0 text-center" role="alert"></div>
+          <div id="importarError" class="d-none alert alert-danger mt-3 mb-0 text-center" role="alert"></div>
+        </div>
+        <form id="form-importarDatos"></form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-success" form="form-importarDatos">Importar datos</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal - limpiar datos -->
+  <div class="modal fade" id="modal-limpiarDatos" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
           <h5 class="modal-title">Limpiar datos</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -159,8 +198,8 @@
         </div>
         <div class="modal-footer">
           <form id="form-limpiarDatos"></form>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, volver</button>
-          <button type="submit" class="btn btn-primary" form="form-limpiarDatos">Sí, borrar</button>
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">No, volver</button>
+          <button type="submit" class="btn btn-danger" form="form-limpiarDatos">Sí, borrar</button>
         </div>
       </div>
     </div>

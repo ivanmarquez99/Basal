@@ -14,9 +14,14 @@ var bd = window.localStorage;
 // Definimos el array con los datos de usuario
 var usuarios = [];
 
+// Para la importación de los datos
+var datosAimportar = [];
 
-window.addEventListener('load', ()=>{
-  
+// bool para definir errores
+var hayError = false;
+
+window.addEventListener('load', () => {
+
   // Eventos de los botones
   document.querySelector('button#importarDatos').addEventListener('click', importarDatos);
   document.querySelector('button#exportarDatos').addEventListener('click', exportarDatos);
@@ -46,7 +51,7 @@ function cargarYmostrarDatos() {
     document.querySelector('button#exportarDatos').setAttribute('aria-disabled', 'false');
     document.querySelector('button#limpiarDatos').classList.remove('disabled');
     document.querySelector('button#limpiarDatos').setAttribute('aria-disabled', 'false');
-    
+
   }
 }
 
@@ -66,8 +71,8 @@ function anadirAtabla(datos) {
       nuevaFila.querySelector("td.lastName").innerText = u.apellidos;
       nuevaFila.querySelector("span.gen").innerText = u.sexo;
       nuevaFila.querySelector("td.age").innerText = u.edad;
-      nuevaFila.querySelector("td.weight").innerText = u.peso;
-      nuevaFila.querySelector("td.height").innerText = u.altura;
+      nuevaFila.querySelector("td.weight").innerText = u.peso + " Kg";
+      nuevaFila.querySelector("td.height").innerText = u.altura + " cm";
       nuevaFila.querySelector("span.activity").innerText = u.actividad;
       let dataGet = getData(u.peso, u.altura, u.edad, u.sexo);
       nuevaFila.querySelector("td.get").innerText = dataGet + " kCal";
@@ -144,7 +149,7 @@ document.querySelector('form#CreateForm').addEventListener("submit", (ev) => {
     "apellidos": cajetinApellido.value,
     "sexo": cajetinGenero.value,
     "edad": parseInt(cajetinEdad.value),
-    "peso": parseInt(cajetinPeso.value),
+    "peso": parseFloat(cajetinPeso.value).toFixed(2),
     "altura": parseInt(cajetinAltura.value),
     "actividad": cajetinActividad.value
   };
@@ -154,22 +159,23 @@ document.querySelector('form#CreateForm').addEventListener("submit", (ev) => {
   cargarYmostrarDatos();
 
   bootstrap.Modal.getInstance(document.querySelector('#modal-nuevoCliente')).hide();
-})
+});
 
 
 /**
  * Carga los datos de json de una url
  */
 function importarDatos() {
-  
+
+  // Mostramos el overlay de carga
   document.querySelector('div#cargando').classList.remove('d-none');
-  
+
   fetch('https://raw.githubusercontent.com/FRomero999/ExamenDIW2022/main/clientes.json')
     .then(response => response.text())
     .then(data => {
 
       // Parseamos a array los datos recibidos
-      datosImportados = JSON.parse(data);
+      let datosImportados = JSON.parse(data);
 
       // Añadimos los datos importados al array usuarios
       if (datosImportados.length > 0) {
@@ -181,18 +187,201 @@ function importarDatos() {
       // Parseamos a json todo el array de usuarios y sobreescribimos todos los datos en bd
       bd.setItem("datos", JSON.stringify(usuarios));
       cargarYmostrarDatos();
-      
-      document.querySelector('div#cargando').classList.add('d-none');
+
+      // Cerramos el overlay de carga (con 200ms de retardo para darle mejor apariencia ya que se cierra muy rápido)
+      setTimeout(() => { document.querySelector('div#cargando').classList.add('d-none'); }, 200);
+
     });
 }
 
 
 /**
- * Exporta los datos en formato JSON
+ * Descarga los datos en formato JSON
  */
 function exportarDatos() {
 
+  let element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(usuarios)));
+  element.setAttribute('download', 'datos.json');
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
 }
+
+
+/**
+ * Gestiona la importación de los datos en formato JSON
+ */
+const importarInfo = document.querySelector('#importarInfo');
+const importarError = document.querySelector('#importarError');
+if (window.FileList && window.File && window.FileReader) {
+
+  // Para la subida drop
+  const dropArea = document.getElementById('drop-area');
+
+  dropArea.addEventListener('dragover', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    event.dataTransfer.dropEffect = 'copy';
+    document.querySelector('#drop-area').classList.add('alert-success');
+    document.querySelector('#drop-area').classList.remove('alert-dark');
+  });
+
+  dropArea.addEventListener('dragleave', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    document.querySelector('#drop-area').classList.add('alert-dark');
+    document.querySelector('#drop-area').classList.remove('alert-success');
+  });
+
+  dropArea.addEventListener('drop', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    importarInfo.textContent = '';
+    importarInfo.classList.add('d-none');
+    importarError.textContent = '';
+    importarError.classList.add('d-none');
+    datosTmp = [];
+    datosAimportar = [];
+
+    document.querySelector('#drop-area').classList.add('alert-dark');
+    document.querySelector('#drop-area').classList.remove('alert-success');
+
+    let file = event.dataTransfer.files[0];
+
+    if (!file.type.match('application/json')) {
+      importarError.textContent = 'El archivo no es correcto.';
+      importarError.classList.remove('d-none');
+      return;
+    }
+
+    reader.readAsText(file);
+  });
+
+  // para la subida por input
+  document.querySelector('#file-selector').addEventListener('change', event => {
+
+    importarInfo.textContent = '';
+    importarInfo.classList.add('d-none');
+    importarError.textContent = '';
+    importarError.classList.add('d-none');
+    datosTmp = [];
+    datosAimportar = [];
+
+    let file = event.target.files[0];
+
+    if (!file.type.match('application/json')) {
+      importarError.textContent = 'El archivo no es correcto.';
+      importarError.classList.remove('d-none');
+      return;
+    }
+
+    reader.readAsText(file);
+  });
+
+
+  // Evento para cuando se cargue el archivo
+  const reader = new FileReader();
+  reader.addEventListener('load', event => {
+
+    datosTmp = JSON.parse(event.target.result);
+    console.log(datosTmp);
+
+    if (!datosTmp) {
+      importarError.textContent = 'El archivo no es correcto.';
+      importarError.classList.remove('d-none');
+      return;
+    }
+    if (datosTmp.length < 1) {
+      importarError.textContent = 'El archivo está vacío.'
+      importarError.classList.remove('d-none');
+      return;
+    }
+
+    // comprobamos si existen los campos para saber si son correctos los datos a importar
+    let campos = ['nombre', 'apellidos', 'sexo', 'edad', 'peso', 'altura', 'actividad'];
+    hayError = false;
+    let arrayTmp = {};
+
+    // Recorremos los campos y guardamos sólo los válidos (por si el fichero tiene cosas no necesarias)
+    datosTmp.forEach((line) => {
+      arrayTmp = [];
+      campos.forEach((nombreCampo) => {
+        //console.log(index + '[' + key + ']' + ': ' + line[key]);
+        if (typeof line[nombreCampo] === 'undefined') {
+          hayError = true;
+          return;
+        } else if (line[nombreCampo] === '') {
+          hayError = true;
+          return;
+        } else {
+          arrayTmp.push([nombreCampo, line[nombreCampo]]);
+        }
+      });
+
+      if (hayError) { return; }
+
+      // convertimos arrayTmp en objeto (para json) y lo añadimos a datosAimportar
+      datosAimportar.push(Object.fromEntries(arrayTmp));
+    });
+
+    if (hayError) {
+      importarError.textContent = 'El archivo no parece ser correcto.';
+      importarError.classList.remove('d-none');
+      return;
+    }
+
+    importarError.classList.add('d-none');
+    importarError.textContent = '';
+
+    importarInfo.textContent = 'Se van a añadir ' + datosTmp.length + ' registros a los ya existentes.';
+    importarInfo.classList.remove('d-none');
+
+  });
+
+} else {
+  importarInfo.textContent = 'Su navegador no soporta la importación de archivos.';
+}
+
+// evento para limpiar el modal al cerrarlo
+document.querySelector('#modal-importarDatos').addEventListener('hidden.bs.modal', event => {
+  
+  importarInfo.classList.add('d-none');
+  importarInfo.textContent = '';
+  importarError.classList.add('d-none');
+  importarError.textContent = '';
+
+  document.querySelector('#file-selector').value = '';
+});
+
+document.querySelector('form#form-importarDatos').addEventListener("submit", (ev) => {
+  ev.preventDefault();
+
+  if (hayError) {
+    console.log('error');
+    return;
+  }
+
+  console.log('usuarios:', datosAimportar);
+  console.log('stringify u:', JSON.stringify(usuarios));
+  console.log('datosAimportar:', datosAimportar);
+  console.log('stringify:', JSON.stringify(datosAimportar));
+
+
+  usuarios = usuarios.concat(datosAimportar);
+  bd.setItem("datos", JSON.stringify(usuarios));
+  cargarYmostrarDatos();
+
+  bootstrap.Modal.getInstance(document.querySelector('#modal-importarDatos')).hide();
+});
+
 
 
 /**
@@ -203,7 +392,7 @@ document.querySelector('form#form-limpiarDatos').addEventListener("submit", (ev)
 
   usuarios = [];
   bd.setItem("datos", usuarios);
-  
+
   // limpiamos el contenido de la tabla
   document.querySelector("tbody").innerHTML = "";
 
@@ -215,4 +404,4 @@ document.querySelector('form#form-limpiarDatos').addEventListener("submit", (ev)
 
 
   bootstrap.Modal.getInstance(document.querySelector('#modal-limpiarDatos')).hide();
-})
+});
