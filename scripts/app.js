@@ -157,8 +157,10 @@ document.querySelector('form#CreateForm').addEventListener("submit", (ev) => {
   usuarios.push(usuario);
   bd.setItem("datos", JSON.stringify(usuarios));
   cargarYmostrarDatos();
-
+  
+  document.querySelector('form#CreateForm').reset();
   bootstrap.Modal.getInstance(document.querySelector('#modal-nuevoCliente')).hide();
+  
 });
 
 
