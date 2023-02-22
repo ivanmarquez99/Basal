@@ -28,9 +28,6 @@ window.addEventListener('load', () => {
 
   // Cargamos y mostramos datos
   cargarYmostrarDatos();
-
-  // bootstrap.Modal.getInstance(document.querySelector('#modal-introduccion')).show(true);
-  new bootstrap.Modal(document.getElementById('modal-introduccion')).show();
 });
 
 
@@ -59,7 +56,7 @@ function cargarYmostrarDatos() {
 
 
 /**
- * Añade filas a la tabla según un array de datos pasado
+ * Añade filas a la tabla según un array de datos recibido
  */
 function anadirAtabla(datos) {
 
@@ -73,7 +70,7 @@ function anadirAtabla(datos) {
       nuevaFila.querySelector("td.lastName").innerText = u.apellidos;
       nuevaFila.querySelector("span.gen").innerText = u.sexo;
       nuevaFila.querySelector("td.age").innerText = u.edad;
-      nuevaFila.querySelector("td.weight").innerText = u.peso + " Kg";
+      nuevaFila.querySelector("td.weight").innerText = parseFloat(u.peso).toFixed(2) + " Kg";
       nuevaFila.querySelector("td.height").innerText = u.altura + " cm";
       nuevaFila.querySelector("span.activity").innerText = u.actividad;
       let dataGet = getData(u.peso, u.altura, u.edad, u.sexo);

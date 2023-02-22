@@ -9,7 +9,7 @@
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
-  </script>
+    </script>
   <meta name="theme-color" content="#ffffff">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.json">
@@ -87,6 +87,8 @@
       <button type="button" id="limpiarDatos" class="flex-fill btn btn-danger rounded-0 disabled" aria-disabled="true"
         data-bs-toggle="modal" data-bs-target="#modal-limpiarDatos" accesskey="l"><u>L</u>impiar
         datos</button>
+      <button type="button" id="ayuda" class="flex-fill btn btn-warning rounded-0" data-bs-toggle="modal"
+        data-bs-target="#modal-introduccion" accesskey="?"><u>?</u></button>
     </footer>
   </section>
 
@@ -232,9 +234,11 @@
               <ul>
                 <li>El botón de Importar, importa datos generados por ti en formato JSON a la tabla</br> <strong>Puedes
                     usar alt + i como acceso rápido</strong></li>
-                <li>El botón de Exportar, exporta los datos que se encuentran en la tabla en formato JSON</br> <strong>Puedes
+                <li>El botón de Exportar, exporta los datos que se encuentran en la tabla en formato JSON</br>
+                  <strong>Puedes
                     usar alt + e como acceso rápido</strong></li>
-                <li>El botón de Limpiar, limpia los datos de la tabla y del LocalStorage</br> <strong>Puedes usar alt + l
+                <li>El botón de Limpiar, limpia los datos de la tabla y del LocalStorage</br> <strong>Puedes usar alt +
+                    l
                     como acceso rápido</strong></li>
               </ul>
             </li>
