@@ -29,6 +29,8 @@ window.addEventListener('load', () => {
   // Cargamos y mostramos datos
   cargarYmostrarDatos();
 
+  // bootstrap.Modal.getInstance(document.querySelector('#modal-introduccion')).show(true);
+  new bootstrap.Modal(document.getElementById('modal-introduccion')).show();
 });
 
 
